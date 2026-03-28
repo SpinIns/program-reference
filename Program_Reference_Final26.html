@@ -1,0 +1,1887 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Program Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&amp;family=IBM+Plex+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #1C1C1E;
+  --ink-mid:    #4A4A52;
+  --ink-light:  #8E8E9A;
+  --ink-faint:  #C4C4CC;
+  --bg:         #F5F4F0;
+  --surface:    #FFFFFF;
+  --surface2:   #F0EFE9;
+  --border:     #E2E0D8;
+  --border-mid: #C8C6BC;
+  --red:        #C0392B;
+  --red-light:  #FDECEA;
+  --red-mid:    #E8705A;
+  --navy:       #1B2A4A;
+  --navy-light: #D6E4F0;
+  --navy-mid:   #2C4A7C;
+  --green:      #1E6B3C;
+  --green-light:#E8F5EE;
+  --gold:       #A07000;
+  --gold-light: #FEF9E7;
+  --radius:     5px;
+  --radius-lg:  10px;
+  --shadow:     0 1px 4px rgba(0,0,0,.07), 0 4px 20px rgba(0,0,0,.05);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,.14);
+  --transition: .14s ease;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  height: 56px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+.header-brand { display: flex; align-items: baseline; gap: 12px; }
+.header-brand h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 18px; font-weight: 600;
+  color: #fff; letter-spacing: -.2px;
+}
+.header-brand .ver {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: rgba(255,255,255,.35);
+  text-transform: uppercase; letter-spacing: 1.5px;
+}
+.header-actions { display: flex; gap: 8px; }
+
+/* ── LAYOUT ── */
+.app {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  height: calc(100vh - 56px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-top {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.search-wrap { position: relative; }
+.search-wrap input {
+  width: 100%; padding: 8px 12px 8px 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px; background: var(--surface);
+  color: var(--ink); outline: none;
+  transition: border-color var(--transition);
+}
+.search-wrap input:focus { border-color: var(--navy-mid); }
+.search-icon {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-faint); font-size: 15px; pointer-events: none;
+}
+.filter-row { display: flex; gap: 5px; }
+.fpill {
+  flex: 1; padding: 5px 4px; border-radius: 20px;
+  border: 1px solid var(--border);
+  font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all var(--transition);
+  color: var(--ink-mid); background: var(--surface);
+  text-align: center;
+}
+.fpill:hover { border-color: var(--navy-mid); color: var(--navy-mid); }
+.fpill.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.prog-count {
+  padding: 6px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--ink-light);
+  border-bottom: 1px solid var(--border);
+}
+.prog-list { flex: 1; overflow-y: auto; }
+.prog-list::-webkit-scrollbar { width: 4px; }
+.prog-list::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 4px; }
+
+.pitem {
+  padding: 10px 14px; cursor: pointer;
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid var(--border);
+  transition: all var(--transition);
+}
+.pitem:hover { background: var(--surface2); border-left-color: var(--border-mid); }
+.pitem.active { background: #EEF3FA; border-left-color: var(--navy-mid); }
+.pitem.active .pi-code { color: var(--navy-mid); }
+.pi-code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--ink-light); margin-bottom: 2px;
+}
+.pi-name { font-size: 12px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pi-lob  { font-size: 10px; color: var(--ink-light); margin-top: 2px; }
+
+/* ── MAIN ── */
+.main {
+  overflow-y: auto; padding: 32px;
+}
+.main::-webkit-scrollbar { width: 5px; }
+.main::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 4px; }
+
+/* Empty state */
+.empty {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 55%; gap: 14px; text-align: center;
+}
+.empty-icon { font-size: 52px; opacity: .12; }
+.empty h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 26px; font-weight: 300;
+  color: var(--ink-mid);
+}
+.empty p { color: var(--ink-light); max-width: 260px; font-size: 13px; }
+
+/* ── DETAIL ── */
+.det-code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--red); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 5px;
+}
+.det-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px; font-weight: 600;
+  color: var(--ink); line-height: 1.15;
+  margin-bottom: 10px;
+}
+.badges { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 500;
+}
+.badge-lob     { background: var(--navy-light); color: var(--navy-mid); }
+.badge-active  { background: var(--green-light); color: var(--green); }
+.badge-runoff  { background: var(--gold-light); color: var(--gold); }
+
+.det-desc {
+  font-size: 12.5px; color: var(--ink-mid);
+  line-height: 1.7; max-width: 680px;
+  padding: 12px 16px;
+  background: var(--surface2);
+  border-left: 3px solid var(--border-mid);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+.det-desc.empty { color: var(--ink-faint); }
+
+/* Cards */
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.card-head {
+  padding: 11px 16px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-head h3 {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--ink-mid);
+}
+.card-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--ink-light);
+  background: var(--border); padding: 1px 7px; border-radius: 10px;
+}
+.card-body { padding: 14px 16px; max-height: 240px; overflow-y: auto; }
+.card-body::-webkit-scrollbar { width: 3px; }
+.card-body::-webkit-scrollbar-thumb { background: var(--border-mid); }
+
+.state-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+.state-chip {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  padding: 3px 9px;
+  background: var(--navy-light);
+  color: var(--navy-mid);
+  border-radius: 4px;
+  border: 1px solid rgba(44,74,124,.15);
+}
+.lob-list { display: flex; flex-direction: column; gap: 6px; }
+.lob-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; }
+.lob-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--red); background: var(--red-light);
+  padding: 2px 6px; border-radius: 3px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.lob-name { color: var(--ink); }
+
+/* Action bar */
+.action-bar {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px; font-weight: 500;
+  cursor: pointer; border: none;
+  transition: all var(--transition);
+}
+.btn-primary   { background: var(--navy); color: #fff; }
+.btn-primary:hover { background: var(--navy-mid); }
+.btn-secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--border-mid); }
+.btn-secondary:hover { background: var(--surface2); border-color: var(--ink-mid); }
+.btn-success   { background: var(--green); color: #fff; }
+.btn-success:hover { background: #165a31; }
+.btn-danger    { background: transparent; color: var(--red); border: 1px solid var(--red); }
+.btn-danger:hover { background: var(--red-light); }
+.btn-export    { background: var(--surface); color: var(--navy-mid); border: 1px solid var(--navy-mid); }
+.btn-export:hover { background: var(--navy-light); }
+.btn-sm { padding: 5px 11px; font-size: 11px; }
+
+/* ── MODALS ── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(20,20,30,.5);
+  z-index: 200; display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+.overlay.open { display: flex; animation: fadein .15s ease; }
+@keyframes fadein { from { opacity:0 } to { opacity:1 } }
+
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideup .18s ease;
+}
+.modal.modal-lg { max-width: 700px; }
+@keyframes slideup { from { transform:translateY(10px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+.modal-head {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-head h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 19px; font-weight: 600;
+}
+.modal-close {
+  background: none; border: none; font-size: 18px;
+  cursor: pointer; color: var(--ink-light);
+  padding: 2px 6px; border-radius: 4px; line-height: 1;
+}
+.modal-close:hover { background: var(--surface2); color: var(--ink); }
+.modal-body { padding: 20px 22px; }
+.modal-foot {
+  padding: 14px 22px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+
+/* Form */
+.fg { margin-bottom: 14px; }
+.fg label {
+  display: block; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .7px;
+  color: var(--ink-mid); margin-bottom: 5px;
+}
+.fg input, .fg select, .fg textarea {
+  width: 100%; padding: 8px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px; color: var(--ink);
+  background: var(--surface); outline: none;
+  transition: border-color var(--transition);
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--navy-mid); }
+.fg textarea { resize: vertical; min-height: 80px; }
+.fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* State checkbox grid */
+.state-cb-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 5px; padding: 12px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius); max-height: 220px; overflow-y: auto;
+}
+.state-cb-grid::-webkit-scrollbar { width: 3px; }
+.state-cb-grid::-webkit-scrollbar-thumb { background: var(--border-mid); }
+.scb { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+.scb input { display: none; }
+.scb-box {
+  width: 36px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  color: var(--ink-mid); background: var(--surface);
+  transition: all .1s; cursor: pointer;
+}
+.scb input:checked + .scb-box {
+  background: var(--navy-mid); border-color: var(--navy-mid); color: #fff;
+}
+
+/* LOB checkbox list */
+.lob-cb-list {
+  max-height: 260px; overflow-y: auto;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface2);
+}
+.lob-cb-list::-webkit-scrollbar { width: 3px; }
+.lob-cb-list::-webkit-scrollbar-thumb { background: var(--border-mid); }
+.lcb {
+  display: flex; align-items: center; gap: 9px;
+  padding: 6px 10px; cursor: pointer;
+  transition: background var(--transition); font-size: 12px;
+}
+.lcb:hover { background: var(--border); }
+.lcb input { cursor: pointer; accent-color: var(--red); }
+.lcb-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--red); width: 36px; flex-shrink: 0;
+}
+
+/* Delete confirm */
+.del-warn {
+  background: var(--red-light); border: 1px solid #f5b7b1;
+  border-radius: var(--radius); padding: 12px 14px;
+  font-size: 12.5px; color: var(--red); margin-bottom: 14px;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 22px; right: 22px;
+  background: var(--ink); color: #fff;
+  padding: 11px 18px; border-radius: var(--radius);
+  font-size: 12px; z-index: 500;
+  display: none; align-items: center; gap: 8px;
+  box-shadow: var(--shadow-lg);
+}
+.toast.show { display: flex; animation: fadein .2s ease; }
+.toast.ok  { background: var(--green); }
+.toast.err { background: var(--red); }
+
+/* Storage indicator */
+.storage-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #4CAF50; display: inline-block;
+  margin-right: 5px; box-shadow: 0 0 5px #4CAF5088;
+}
+
+/* Divider in modal */
+.modal-divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 14px 0;
+}
+
+/* Add program note */
+.form-hint { font-size: 10.5px; color: var(--ink-light); margin-top: 3px; }
+
+/* ── TABS ── */
+.tab-bar {
+  display: flex; gap: 0;
+  background: var(--navy);
+  border-bottom: 2px solid rgba(255,255,255,.1);
+  padding: 0 24px;
+}
+.tab-btn {
+  padding: 10px 22px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.5);
+  background: none; border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer; margin-bottom: -2px;
+  transition: all .15s;
+  letter-spacing: .3px;
+}
+.tab-btn:hover { color: rgba(255,255,255,.8); }
+.tab-btn.active { color: #fff; border-bottom-color: #fff; }
+
+.tab-panel { display: none; height: calc(100vh - 100px); }
+.tab-panel.active { display: flex; flex-direction: column; }
+
+/* ── CROSS-REF TAB ── */
+.xref-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  flex: 1;
+  overflow: hidden;
+}
+.xref-panel {
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+.xref-panel:last-child { border-right: none; }
+
+.xref-head {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.xref-head h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 17px; font-weight: 600;
+  color: var(--ink); margin-bottom: 12px;
+}
+.xref-selector { display: flex; flex-direction: column; gap: 8px; }
+.xref-selector select, .xref-selector input {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px; color: var(--ink);
+  background: var(--surface); outline: none;
+  transition: border-color .14s;
+}
+.xref-selector select:focus, .xref-selector input:focus {
+  border-color: var(--navy-mid);
+}
+
+.xref-results {
+  flex: 1; overflow-y: auto;
+  padding: 0;
+}
+.xref-results::-webkit-scrollbar { width: 4px; }
+.xref-results::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 4px; }
+
+.xref-summary {
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--ink-light);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.xref-summary strong { color: var(--ink); font-family: 'IBM Plex Mono', monospace; }
+
+.xref-empty {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 200px; gap: 10px; text-align: center;
+  color: var(--ink-light);
+}
+.xref-empty .xe-icon { font-size: 36px; opacity: .15; }
+.xref-empty p { font-size: 12px; max-width: 200px; }
+
+.xref-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background .12s;
+}
+.xref-item:hover { background: var(--surface2); }
+.xi-top {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 5px;
+}
+.xi-code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500; color: var(--ink-light);
+}
+.xi-name { font-size: 13px; color: var(--ink); font-weight: 500; }
+.xi-detail {
+  font-size: 11px; color: var(--ink-light); line-height: 1.5;
+}
+.xi-states {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;
+}
+.xi-state {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  padding: 2px 6px; background: var(--navy-light); color: var(--navy-mid);
+  border-radius: 3px;
+}
+.xi-lobs {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;
+}
+.xi-lob {
+  font-size: 10px; padding: 2px 7px;
+  background: var(--red-light); color: var(--red);
+  border-radius: 3px; font-family: 'IBM Plex Mono', monospace;
+}
+.xi-nav {
+  font-size: 10px; color: var(--navy-mid);
+  margin-top: 5px; opacity: .7;
+}
+.xref-item:hover .xi-nav { opacity: 1; }
+
+/* Active filter indicator in xref */
+.xref-active-filter {
+  padding: 6px 20px;
+  font-size: 11px; color: var(--ink-mid);
+  background: #EEF3FA;
+  border-bottom: 1px solid var(--navy-light);
+}
+.xref-active-filter span {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--navy-mid); font-weight: 500;
+}
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <h1>Program Reference</h1>
+    <span class="ver">State &amp; LOB Lookup</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-success btn-sm" onclick="openAddProgram()">＋ Add Program</button>
+    <button class="btn btn-export btn-sm" onclick="openExport()">⬇ Export &amp; Share</button>
+  </div>
+</header>
+
+
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-prog-btn" onclick="switchTab('prog')">Program Lookup</button>
+  <button class="tab-btn" id="tab-xref-btn" onclick="switchTab('xref')">Cross-Reference</button>
+</div>
+
+
+<div class="tab-panel active" id="tab-prog">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="text" placeholder="Search programs…" oninput="renderList()">
+      </div>
+      <div class="filter-row">
+        <button class="fpill on" id="f-all" onclick="setFilter('all',this)">All</button>
+        <button class="fpill" id="f-active" onclick="setFilter('active',this)">Active</button>
+        <button class="fpill" id="f-runoff" onclick="setFilter('runoff',this)">Run-off</button>
+      </div>
+    </div>
+    <div class="prog-count" id="progCount">79 of 79 programs</div>
+    <div class="prog-list" id="progList">
+    <div class="pitem " onclick="selectProgram('5STAR')">
+      <div class="pi-code">5STAR</div>
+      <div class="pi-name">5STAR – 5Star</div>
+      <div class="pi-lob">Commercial Auto</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_ASP_BOPAP_A')">
+      <div class="pi-code">ACL_ASP_BOPAP_A</div>
+      <div class="pi-name">ACL_ASP_BOPAP_A – Accelerant – Aspyre BOP Apartments</div>
+      <div class="pi-lob">Commercial BOP</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_ASP_BOPAP_S')">
+      <div class="pi-code">ACL_ASP_BOPAP_S</div>
+      <div class="pi-name">ACL_ASP_BOPAP_S – Accelerant – Aspyre BOP Apartments</div>
+      <div class="pi-lob">Commercial BOP</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_BAS_FARM_A')">
+      <div class="pi-code">ACL_BAS_FARM_A</div>
+      <div class="pi-name">ACL_BAS_FARM_A – Accelerant – Bascule Farm &amp; Ranch</div>
+      <div class="pi-lob">Commercial - Farm &amp; Ranch</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_CAT_BLDRS_S')">
+      <div class="pi-code">ACL_CAT_BLDRS_S</div>
+      <div class="pi-name">ACL_CAT_BLDRS_S – Accelerant – Catapult Builders Risk</div>
+      <div class="pi-lob">Builders Risk / Course of Construction</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_CIT_CMPRE_S')">
+      <div class="pi-code">ACL_CIT_CMPRE_S</div>
+      <div class="pi-name">ACL_CIT_CMPRE_S – Accelerant – Citadel REI CMP</div>
+      <div class="pi-lob">CMP - Commercial Package</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_DUA_CMAUTO_S')">
+      <div class="pi-code">ACL_DUA_CMAUTO_S</div>
+      <div class="pi-name">ACL_DUA_CMAUTO_S – Accelerant – DUAL Commercial Auto</div>
+      <div class="pi-lob">Commercial Auto</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_NREIG_CMPRE_S')">
+      <div class="pi-code">ACL_NREIG_CMPRE_S</div>
+      <div class="pi-name">ACL_NREIG_CMPRE_S – Accelerant – NREIG CMP</div>
+      <div class="pi-lob">CMP - Commercial Package</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_QUA_CCGL_A')">
+      <div class="pi-code">ACL_QUA_CCGL_A</div>
+      <div class="pi-name">ACL_QUA_CCGL_A – Accelerant – Quantum Commercial GL</div>
+      <div class="pi-lob">Commercial General Liability (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_QUA_CCGL_S')">
+      <div class="pi-code">ACL_QUA_CCGL_S</div>
+      <div class="pi-name">ACL_QUA_CCGL_S – Accelerant – Quantum Commercial GL</div>
+      <div class="pi-lob">Commercial General Liability (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_RIV_YACHT_S')">
+      <div class="pi-code">ACL_RIV_YACHT_S</div>
+      <div class="pi-name">ACL_RIV_YACHT_S – Accelerant – Rivington Yacht</div>
+      <div class="pi-lob">Marine / Yacht Insurance (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACL_VOL_BOPMS_S')">
+      <div class="pi-code">ACL_VOL_BOPMS_S</div>
+      <div class="pi-name">ACL_VOL_BOPMS_S – Accelerant – Volta BOP</div>
+      <div class="pi-lob">Commercial BOP</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACN')">
+      <div class="pi-code">ACN</div>
+      <div class="pi-name">ACN – Acadian</div>
+      <div class="pi-lob">Homeowners</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ACNT')">
+      <div class="pi-code">ACNT</div>
+      <div class="pi-name">ACNT – Acadian</div>
+      <div class="pi-lob">Homeowners</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('AHOY')">
+      <div class="pi-code">AHOY</div>
+      <div class="pi-name">AHOY – Ahoy!</div>
+      <div class="pi-lob">Marine / Boat Insurance (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('AMRISC')">
+      <div class="pi-code">AMRISC</div>
+      <div class="pi-name">AMRISC – AmRisc</div>
+      <div class="pi-lob">Commercial Property</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ANNEX-FLOOD')">
+      <div class="pi-code">ANNEX-FLOOD</div>
+      <div class="pi-name">ANNEX-FLOOD – Annex Flood</div>
+      <div class="pi-lob">Flood Insurance </div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ARROWHEAD')">
+      <div class="pi-code">ARROWHEAD</div>
+      <div class="pi-name">ARROWHEAD – Arrowhead</div>
+      <div class="pi-lob">Commercial P&amp;C</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ARROWHEAD_3')">
+      <div class="pi-code">ARROWHEAD_3</div>
+      <div class="pi-name">ARROWHEAD_3 – Arrowhead</div>
+      <div class="pi-lob">Commercial P&amp;C</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ATLAS')">
+      <div class="pi-code">ATLAS</div>
+      <div class="pi-name">ATLAS – Atlas</div>
+      <div class="pi-lob">Homeowners </div>
+    </div>
+    <div class="pitem " onclick="selectProgram('BATTLEFACE')">
+      <div class="pi-code">BATTLEFACE</div>
+      <div class="pi-name">BATTLEFACE – Battleface</div>
+      <div class="pi-lob">Travel Insurance (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('BATTLEFACE_2')">
+      <div class="pi-code">BATTLEFACE_2</div>
+      <div class="pi-name">BATTLEFACE_2 – Battleface</div>
+      <div class="pi-lob">Travel Insurance (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('BOOST')">
+      <div class="pi-code">BOOST</div>
+      <div class="pi-name">BOOST – Boost</div>
+      <div class="pi-lob">Insurance Platform / Embedded Insurance</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('BOOST-CYBER')">
+      <div class="pi-code">BOOST-CYBER</div>
+      <div class="pi-name">BOOST-CYBER – Boost Cyber (Cyber Insurance Program)</div>
+      <div class="pi-lob">Cyber Insurance (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('BOO_LPL_A')">
+      <div class="pi-code">BOO_LPL_A</div>
+      <div class="pi-name">BOO_LPL_A</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('BOO_LPL_S')">
+      <div class="pi-code">BOO_LPL_S</div>
+      <div class="pi-name">BOO_LPL_S</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('CBR')">
+      <div class="pi-code">CBR</div>
+      <div class="pi-name">CBR – Cabrillo</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('CBR_NOTSPIN')">
+      <div class="pi-code">CBR_NOTSPIN</div>
+      <div class="pi-name">CBR_NOTSPIN – Cabrillo (Non‑Spin)</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('COTERIE')">
+      <div class="pi-code">COTERIE</div>
+      <div class="pi-name">COTERIE – Coterie (Small Commercial Insurance)</div>
+      <div class="pi-lob">CMP - Small Commercial Package</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('COTERIE-BERK-CYBER')">
+      <div class="pi-code">COTERIE-BERK-CYBER</div>
+      <div class="pi-name">COTERIE-BERK-CYBER – Coterie – Berkley Cyber</div>
+      <div class="pi-lob">Cyber Insurance (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('COTERIE-BERK-WPV')">
+      <div class="pi-code">COTERIE-BERK-WPV</div>
+      <div class="pi-name">COTERIE-BERK-WPV – Coterie – Berkley Workers’ Comp / WPV</div>
+      <div class="pi-lob">Workers’ Compensation (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('COTERIE-BERKLEY')">
+      <div class="pi-code">COTERIE-BERKLEY</div>
+      <div class="pi-name">COTERIE-BERKLEY – Coterie – Berkley Program</div>
+      <div class="pi-lob">CMP - Small Commercial Package</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('EUC_CYBER_S')">
+      <div class="pi-code">EUC_CYBER_S</div>
+      <div class="pi-name">EUC_CYBER_S – Euclid Underwriting – Cyber (Surplus Lines)</div>
+      <div class="pi-lob">Cyber Insurance (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HDVI')">
+      <div class="pi-code">HDVI</div>
+      <div class="pi-name">HDVI – HDVI (Commercial Auto / Trucking)</div>
+      <div class="pi-lob">Commercial Auto</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HIPPO-COMMERCIAL')">
+      <div class="pi-code">HIPPO-COMMERCIAL</div>
+      <div class="pi-name">HIPPO-COMMERCIAL – Hippo Commercial</div>
+      <div class="pi-lob">CMP - Commercial Package / Small Commercial</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HIPPO-CORE_21_CBR')">
+      <div class="pi-code">HIPPO-CORE_21_CBR</div>
+      <div class="pi-name">HIPPO-CORE_21_CBR – Hippo Core 2021 – Builders Risk</div>
+      <div class="pi-lob">Builders Risk</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HIPPO-CORE_22_CBR')">
+      <div class="pi-code">HIPPO-CORE_22_CBR</div>
+      <div class="pi-name">HIPPO-CORE_22_CBR – Hippo Core 2022 – Builders Risk</div>
+      <div class="pi-lob">Builders Risk</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HIPPO-CORE_23_CBR')">
+      <div class="pi-code">HIPPO-CORE_23_CBR</div>
+      <div class="pi-name">HIPPO-CORE_23_CBR – Hippo Core 2023 – Builders Risk</div>
+      <div class="pi-lob">Builders Risk</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HIPPO-CORE_24_CBR')">
+      <div class="pi-code">HIPPO-CORE_24_CBR</div>
+      <div class="pi-name">HIPPO-CORE_24_CBR – Hippo Core 2024 – Builders Risk</div>
+      <div class="pi-lob">Builders Risk</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HIPPO-CORE_25_CBR')">
+      <div class="pi-code">HIPPO-CORE_25_CBR</div>
+      <div class="pi-name">HIPPO-CORE_25_CBR – Hippo Core 2025 – Builders Risk</div>
+      <div class="pi-lob">Builders Risk</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HIPPO-HO5_25_ASINCL')">
+      <div class="pi-code">HIPPO-HO5_25_ASINCL</div>
+      <div class="pi-name">HIPPO-HO5_25_ASINCL – Hippo HO5 2025 (Owner‑Occupied Homeowners)</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('HL')">
+      <div class="pi-code">HL</div>
+      <div class="pi-name">HL – HL (Specialty Program)</div>
+      <div class="pi-lob">Specialty Commercial (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MCN_CMAUTO_S')">
+      <div class="pi-code">MCN_CMAUTO_S</div>
+      <div class="pi-name">MCN_CMAUTO_S – MCN – Commercial Auto (Surplus Lines)</div>
+      <div class="pi-lob">Commercial Auto</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MILEAUTO')">
+      <div class="pi-code">MILEAUTO</div>
+      <div class="pi-name">MILEAUTO – Mile Auto (Pay‑Per‑Mile Personal Auto)</div>
+      <div class="pi-lob">Personal Auto</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI')">
+      <div class="pi-code">MSI</div>
+      <div class="pi-name">MSI – MSI (Multiple Program Years / Forms)</div>
+      <div class="pi-lob">Personal Lines </div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_1_21')">
+      <div class="pi-code">MSI_1_21</div>
+      <div class="pi-name">MSI_1_21</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_1_22')">
+      <div class="pi-code">MSI_1_22</div>
+      <div class="pi-name">MSI_1_22</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_1_23')">
+      <div class="pi-code">MSI_1_23</div>
+      <div class="pi-name">MSI_1_23</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_1_24')">
+      <div class="pi-code">MSI_1_24</div>
+      <div class="pi-name">MSI_1_24</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_2_21')">
+      <div class="pi-code">MSI_2_21</div>
+      <div class="pi-name">MSI_2_21</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_2_22')">
+      <div class="pi-code">MSI_2_22</div>
+      <div class="pi-name">MSI_2_22</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_2_23')">
+      <div class="pi-code">MSI_2_23</div>
+      <div class="pi-name">MSI_2_23</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_2_24')">
+      <div class="pi-code">MSI_2_24</div>
+      <div class="pi-name">MSI_2_24</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_B_19')">
+      <div class="pi-code">MSI_B_19</div>
+      <div class="pi-name">MSI_B_19</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_B_20')">
+      <div class="pi-code">MSI_B_20</div>
+      <div class="pi-name">MSI_B_20</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_B_21')">
+      <div class="pi-code">MSI_B_21</div>
+      <div class="pi-name">MSI_B_21</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_B_22')">
+      <div class="pi-code">MSI_B_22</div>
+      <div class="pi-name">MSI_B_22</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_B_23')">
+      <div class="pi-code">MSI_B_23</div>
+      <div class="pi-name">MSI_B_23</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_B_24')">
+      <div class="pi-code">MSI_B_24</div>
+      <div class="pi-name">MSI_B_24</div>
+      <div class="pi-lob">—</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_HO3_A_FL')">
+      <div class="pi-code">MSI_HO3_A_FL</div>
+      <div class="pi-name">MSI_HO3_A_FL – MSI HO3 (Admitted – Florida)</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_HO3_A_RG')">
+      <div class="pi-code">MSI_HO3_A_RG</div>
+      <div class="pi-name">MSI_HO3_A_RG – MSI HO3 (Admitted – Regional)</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_HO3_MNST_S')">
+      <div class="pi-code">MSI_HO3_MNST_S</div>
+      <div class="pi-name">MSI_HO3_MNST_S – MSI HO3 (Surplus Lines – Mainstreet)</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_HO3_S')">
+      <div class="pi-code">MSI_HO3_S</div>
+      <div class="pi-name">MSI_HO3_S – MSI HO3 (Excess &amp; Surplus Lines)</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('MSI_HO3_S_ARCANA')">
+      <div class="pi-code">MSI_HO3_S_ARCANA</div>
+      <div class="pi-name">MSI_HO3_S_ARCANA – MSI HO3 (Surplus Lines – Arcana)</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('ORC')">
+      <div class="pi-code">ORC</div>
+      <div class="pi-name">ORC – ORC (Specialty Program)</div>
+      <div class="pi-lob">Specialty Commercial (Casualty)</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('OUTDOORSY')">
+      <div class="pi-code">OUTDOORSY</div>
+      <div class="pi-name">OUTDOORSY – Outdoorsy (RV Sharing Insurance)</div>
+      <div class="pi-lob">RV / Specialty Auto</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('OUTDOORSY_3')">
+      <div class="pi-code">OUTDOORSY_3</div>
+      <div class="pi-name">OUTDOORSY_3 – Outdoorsy (Versioned Program)</div>
+      <div class="pi-lob">RV / Specialty Auto</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('PATTERN')">
+      <div class="pi-code">PATTERN</div>
+      <div class="pi-name">PATTERN – Pattern Insurance (Homeowners)</div>
+      <div class="pi-lob">Homeowners</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('RG')">
+      <div class="pi-code">RG</div>
+      <div class="pi-name">RG – Redpoint / RG Program</div>
+      <div class="pi-lob">Specialty Commercial</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('RG_HSB')">
+      <div class="pi-code">RG_HSB</div>
+      <div class="pi-name">RG_HSB – RG with Hartford Steam Boiler</div>
+      <div class="pi-lob">Commercial Property / Equipment Breakdown</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('RVP')">
+      <div class="pi-code">RVP</div>
+      <div class="pi-name">RVP – RVP (Recreational Vehicle Program)</div>
+      <div class="pi-lob">Recreational Vehicle</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('SB')">
+      <div class="pi-code">SB</div>
+      <div class="pi-name">SB – Sure (Embedded Insurance Program)</div>
+      <div class="pi-lob">Embedded Insurance Platform</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('SB_A')">
+      <div class="pi-code">SB_A</div>
+      <div class="pi-name">SB_A – Sure (Admitted Program)</div>
+      <div class="pi-lob">Embedded Insurance Platform</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('SB_HSB')">
+      <div class="pi-code">SB_HSB</div>
+      <div class="pi-name">SB_HSB – Sure with Hartford Steam Boiler</div>
+      <div class="pi-lob">Embedded Insurance/ Equipement Breakdown</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('SOLA')">
+      <div class="pi-code">SOLA</div>
+      <div class="pi-name">SOLA – Sola Insurance</div>
+      <div class="pi-lob">Specialty Commercial</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('SOLA_WH')">
+      <div class="pi-code">SOLA_WH</div>
+      <div class="pi-name">SOLA_WH – Sola – Warehouse / WH Variant</div>
+      <div class="pi-lob">Commercial Property </div>
+    </div>
+    <div class="pitem " onclick="selectProgram('TF-COMML')">
+      <div class="pi-code">TF-COMML</div>
+      <div class="pi-name">TF-COMML – Team Focus Commercial</div>
+      <div class="pi-lob">CMP - Commercial Package</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('TF-CONDO')">
+      <div class="pi-code">TF-CONDO</div>
+      <div class="pi-name">TF-CONDO – Team Focus Condo</div>
+      <div class="pi-lob">Personal Lines - Homeowners/Dwelling</div>
+    </div>
+    <div class="pitem " onclick="selectProgram('VITU')">
+      <div class="pi-code">VITU</div>
+      <div class="pi-name">VITU – Vitu (Automotive / Dealer Services)</div>
+      <div class="pi-lob">Commercial Auto</div>
+    </div></div>
+  </aside>
+
+  <main class="main" id="mainPanel">
+    <div class="empty">
+      <div class="empty-icon">◫</div>
+      <h2>Select a program</h2>
+      <p>Choose any program from the list to view its states and lines of business.</p>
+    </div>
+  </main>
+</div>
+</div><!-- end tab-prog -->
+
+
+<div class="tab-panel" id="tab-xref">
+  <div class="xref-layout">
+
+    <!-- ── STATE PANEL ── -->
+    <div class="xref-panel">
+      <div class="xref-head">
+        <h2>Programs by State</h2>
+        <div class="xref-selector">
+          <select id="stateSelect" onchange="runStateXref()">
+            <option value="">— Select a state —</option>
+            <option value="AK">AK</option>
+<option value="AL">AL</option>
+<option value="AR">AR</option>
+<option value="AZ">AZ</option>
+<option value="CA">CA</option>
+<option value="CO">CO</option>
+<option value="CT">CT</option>
+<option value="DC">DC</option>
+<option value="DE">DE</option>
+<option value="FL">FL</option>
+<option value="GA">GA</option>
+<option value="HI">HI</option>
+<option value="IA">IA</option>
+<option value="ID">ID</option>
+<option value="IL">IL</option>
+<option value="IN">IN</option>
+<option value="KS">KS</option>
+<option value="KY">KY</option>
+<option value="LA">LA</option>
+<option value="MA">MA</option>
+<option value="MD">MD</option>
+<option value="ME">ME</option>
+<option value="MH">MH</option>
+<option value="MI">MI</option>
+<option value="MN">MN</option>
+<option value="MO">MO</option>
+<option value="MS">MS</option>
+<option value="MT">MT</option>
+<option value="NC">NC</option>
+<option value="ND">ND</option>
+<option value="NE">NE</option>
+<option value="NH">NH</option>
+<option value="NJ">NJ</option>
+<option value="NM">NM</option>
+<option value="NV">NV</option>
+<option value="NY">NY</option>
+<option value="OH">OH</option>
+<option value="OK">OK</option>
+<option value="OR">OR</option>
+<option value="PA">PA</option>
+<option value="RI">RI</option>
+<option value="SC">SC</option>
+<option value="SD">SD</option>
+<option value="TN">TN</option>
+<option value="TX">TX</option>
+<option value="UT">UT</option>
+<option value="VA">VA</option>
+<option value="VT">VT</option>
+<option value="WA">WA</option>
+<option value="WI">WI</option>
+<option value="WV">WV</option>
+<option value="WY">WY</option>
+          </select>
+        </div>
+      </div>
+      <div id="stateXrefSummary" style="display: none;" class="xref-summary"><span><strong>31</strong> programs write in KS</span>
+    <span>29 active &nbsp;·&nbsp; 2 run-off</span></div>
+      <div id="stateXrefFilter" style="display: none;" class="xref-active-filter">Showing programs that write in <span>KS</span></div>
+      <div class="xref-results" id="stateXrefResults"><div class="xref-empty"><div class="xe-icon">🗺</div><p>Select a state to see all programs writing there</p></div></div>
+    </div>
+
+    <!-- ── LOB PANEL ── -->
+    <div class="xref-panel">
+      <div class="xref-head">
+        <h2>Programs by Line of Business</h2>
+        <div class="xref-selector">
+          <input type="text" id="lobSearch" placeholder="Filter by keyword (e.g. homeowners, auto…)" oninput="filterLobDropdown()">
+          <select id="lobSelect" onchange="runLobXref()">
+            <option value="">— Select a line of business —</option>
+            <option value="10" data-desc="fire">10 — Fire</option>
+<option value="21" data-desc="allied lines">21 — Allied lines</option>
+<option value="22" data-desc="multiple peril crop">22 — Multiple peril crop</option>
+<option value="23" data-desc="federal flood">23 — Federal flood</option>
+<option value="24" data-desc="private crop">24 — Private crop</option>
+<option value="25" data-desc="private flood">25 — Private flood</option>
+<option value="30" data-desc="farmowners multiple peril">30 — Farmowners multiple peril</option>
+<option value="40" data-desc="homeowners multiple peril">40 — Homeowners multiple peril</option>
+<option value="51" data-desc="commercial multiple peril (non-liability portion)">51 — Commercial multiple peril (non-liability portion)</option>
+<option value="52" data-desc="commercial multiple peril (liability portion)">52 — Commercial multiple peril (liability portion)</option>
+<option value="60" data-desc="mortgage guaranty">60 — Mortgage guaranty</option>
+<option value="80" data-desc="ocean marine">80 — Ocean marine</option>
+<option value="91" data-desc="inland marine">91 — Inland marine</option>
+<option value="92" data-desc="pet insurance">92 — Pet insurance</option>
+<option value="100" data-desc="financial guaranty">100 — Financial guaranty</option>
+<option value="111" data-desc="medical professional liability - occurrence">111 — Medical professional liability - occurrence</option>
+<option value="112" data-desc="medical professional liability - claims-made">112 — Medical professional liability - claims-made</option>
+<option value="120" data-desc="earthquake">120 — Earthquake</option>
+<option value="131" data-desc="comprehensive (hospital and medical) individual">131 — Comprehensive (hospital and medical) individual</option>
+<option value="132" data-desc="comprehensive (hospital and medical) group">132 — Comprehensive (hospital and medical) group</option>
+<option value="140" data-desc="credit accident and health (group and individual)">140 — Credit accident and health (group and individual)</option>
+<option value="151" data-desc="vision only">151 — Vision only</option>
+<option value="152" data-desc="dental only">152 — Dental only</option>
+<option value="153" data-desc="disability income">153 — Disability income</option>
+<option value="154" data-desc="medicare supplement">154 — Medicare supplement</option>
+<option value="155" data-desc="medicaid title xix">155 — Medicaid Title XIX</option>
+<option value="156" data-desc="medicare title xviii">156 — Medicare Title XVIII</option>
+<option value="157" data-desc="long-term care">157 — Long-term care</option>
+<option value="158" data-desc="federal employees health benefits plan">158 — Federal employees health benefits plan</option>
+<option value="159" data-desc="other health">159 — Other health</option>
+<option value="160" data-desc="workers' compensation">160 — Workers' compensation</option>
+<option value="171" data-desc="other liabilities – occurrence">171 — Other liabilities – occurrence</option>
+<option value="172" data-desc="other liabilities – claims-made">172 — Other liabilities – claims-made</option>
+<option value="173" data-desc="excess workers' compensation">173 — Excess workers' compensation</option>
+<option value="181" data-desc="products liability — occurrence">181 — Products liability — occurrence</option>
+<option value="182" data-desc="products liability — claims-made">182 — Products liability — claims-made</option>
+<option value="191" data-desc="private passenger auto no-fault (personal injury protection)">191 — Private passenger auto no-fault (personal injury protection)</option>
+<option value="192" data-desc="other private passenger auto liability">192 — Other private passenger auto liability</option>
+<option value="193" data-desc="commercial auto no-fault (personal injury protection)">193 — Commercial auto no-fault (personal injury protection)</option>
+<option value="194" data-desc="other commercial auto liability">194 — Other commercial auto liability</option>
+<option value="211" data-desc="private passenger auto physical damage">211 — Private passenger auto physical damage</option>
+<option value="212" data-desc="commercial auto physical damage">212 — Commercial auto physical damage</option>
+<option value="220" data-desc="aircrafts (all perils)">220 — Aircrafts (all perils)</option>
+<option value="230" data-desc="fidelity">230 — Fidelity</option>
+<option value="240" data-desc="surety">240 — Surety</option>
+<option value="260" data-desc="burglary and theft">260 — Burglary and theft</option>
+<option value="270" data-desc="boiler and machinery">270 — Boiler and machinery</option>
+<option value="280" data-desc="credit">280 — Credit</option>
+<option value="290" data-desc="international">290 — International</option>
+<option value="300" data-desc="warranty">300 — Warranty</option>
+<option value="310" data-desc="reinsurance - nonproportional assumed property">310 — Reinsurance - nonproportional assumed property</option>
+<option value="320" data-desc="reinsurance - nonproportional assumed liability">320 — Reinsurance - nonproportional assumed liability</option>
+<option value="330" data-desc="reinsurance - nonproportional assumed financial lines">330 — Reinsurance - nonproportional assumed financial lines</option>
+<option value="340" data-desc="aggregate write-ins for other lines of business">340 — Aggregate write-ins for other lines of business</option>
+          </select>
+        </div>
+      </div>
+      <div id="lobXrefSummary" style="display: none;" class="xref-summary"><span><strong>3</strong> programs write ASLOB 211</span>
+    <span>2 active &nbsp;·&nbsp; 1 run-off</span></div>
+      <div id="lobXrefFilter" style="display: none;" class="xref-active-filter">Showing programs writing <span>211 — Private passenger auto physical damage</span></div>
+      <div class="xref-results" id="lobXrefResults"><div class="xref-empty"><div class="xe-icon">📋</div><p>Select a line of business to see all programs writing it</p></div></div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ── MODAL: Edit States ── -->
+<div class="overlay" id="m-states">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Edit States</h2>
+      <button class="modal-close" onclick="closeModal('m-states')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--ink-mid);margin-bottom:12px;">Check every state this program writes in.</p>
+      <div class="state-cb-grid" id="stateCBs"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('m-states')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveStates()">Save States</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Edit LOBs ── -->
+<div class="overlay" id="m-lobs">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Edit Lines of Business</h2>
+      <button class="modal-close" onclick="closeModal('m-lobs')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--ink-mid);margin-bottom:12px;">Check every ASLOB code that applies to this program.</p>
+      <div class="lob-cb-list" id="lobCBs"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('m-lobs')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLOBs()">Save LOBs</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Edit Info ── -->
+<div class="overlay" id="m-info">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Edit Program Info</h2>
+      <button class="modal-close" onclick="closeModal('m-info')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg-row">
+        <div class="fg">
+          <label>Program Code</label>
+          <input id="ei-code" type="text" disabled="" style="background:var(--surface2);color:var(--ink-light);">
+        </div>
+        <div class="fg">
+          <label>Status</label>
+          <select id="ei-status">
+            <option value="Active">Active</option>
+            <option value="Run-off">Run-off</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Full Name</label>
+        <input id="ei-name" type="text">
+      </div>
+      <div class="fg">
+        <label>Line of Business (LOB)</label>
+        <input id="ei-lob" type="text">
+      </div>
+      <div class="fg">
+        <label>Description</label>
+        <textarea id="ei-desc"></textarea>
+      </div>
+      <div class="fg">
+        <label>Notes / Additional Info</label>
+        <input id="ei-notes" type="text">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('m-info')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveInfo()">Save Info</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Remove Program ── -->
+<div class="overlay" id="m-remove">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Remove Program</h2>
+      <button class="modal-close" onclick="closeModal('m-remove')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="del-warn">
+        ⚠ This will permanently remove this program and all its states and LOBs from the dataset.
+        This action cannot be undone.
+      </div>
+      <div class="fg">
+        <label>Type the program code to confirm</label>
+        <input id="del-confirm" type="text" placeholder="e.g. 5STAR" autocomplete="off">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('m-remove')">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmRemove()">Remove Program</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Add Program ── -->
+<div class="overlay" id="m-add">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h2>Add New Program</h2>
+      <button class="modal-close" onclick="closeModal('m-add')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg-row">
+        <div class="fg">
+          <label>Program Code *</label>
+          <input id="add-code" type="text" placeholder="e.g. ACL_NEW_S">
+          <div class="form-hint">Short code used in reporting systems</div>
+        </div>
+        <div class="fg">
+          <label>Status</label>
+          <select id="add-status">
+            <option value="Active">Active</option>
+            <option value="Run-off">Run-off</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Full Name *</label>
+        <input id="add-name" type="text" placeholder="e.g. Accelerant – New Program">
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label>Line of Business</label>
+          <input id="add-lob" type="text" placeholder="e.g. Commercial Auto">
+        </div>
+        <div class="fg">
+          <label>Notes / Additional Info</label>
+          <input id="add-notes" type="text" placeholder="e.g. NY Only">
+        </div>
+      </div>
+      <div class="fg">
+        <label>Description</label>
+        <textarea id="add-desc" placeholder="Describe the program…"></textarea>
+      </div>
+      <hr class="modal-divider">
+      <div class="fg">
+        <label>States</label>
+        <div class="state-cb-grid" id="addStateCBs"></div>
+      </div>
+      <div class="fg">
+        <label>Lines of Business (ASLOB)</label>
+        <div class="lob-cb-list" id="addLobCBs"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('m-add')">Cancel</button>
+      <button class="btn btn-success" onclick="saveNewProgram()">Add Program</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Export & Share ── -->
+<div class="overlay open" id="m-export">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Export &amp; Share</h2>
+      <button class="modal-close" onclick="closeModal('m-export')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--ink-mid);margin-bottom:16px;line-height:1.65;">
+        This generates a <strong>new self-contained HTML file</strong> with all your current data baked in.
+        Share it via SharePoint, OneDrive, or email — anyone who opens it gets the latest version
+        with no setup required.
+      </p>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:12px;color:var(--ink-mid);margin-bottom:4px;">
+        <span class="storage-dot"></span>
+        Auto-save is active. Your edits are preserved in this browser automatically.
+      </div>
+      <p style="font-size:11px;color:var(--ink-light);margin-top:8px;">
+        Current dataset: <strong id="exportCount">79</strong> programs
+        &nbsp;·&nbsp; Last saved: <strong id="lastSaved">3/25/2026, 8:54:04 PM</strong>
+      </p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('m-export')">Close</button>
+      <button class="btn btn-primary" onclick="exportHTML()">⬇ Download Shareable HTML</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA & CONSTANTS
+// ─────────────────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'prog_ref_data_v1';
+const SEED_PROGRAMS = [{"code":"5STAR","full_name":"5STAR – 5Star","lob":"Commercial Auto","description":"5Star is a commercial public auto program writing charter buses and limousines only in New York state on Spinnaker Insurance Company paper. Spinnaker will provide paper until Incline obtains its license to write in the state. Claims will be handled by Athens.","notes":"NY Only","status":"Active","states":["NY"],"lobs":[{"code":193,"description":"Commercial auto no-fault (personal injury protection)"},{"code":194,"description":"Other commercial auto liability"},{"code":212,"description":"Commercial auto physical damage"}]},{"code":"ACL_ASP_BOPAP_A","full_name":"ACL_ASP_BOPAP_A – Accelerant – Aspyre BOP Apartments","lob":"Commercial BOP","description":"Balance Partners writes Admitted Business Owner's Policy (BOP)  for residential apartments as Class 2 business under the NY FTZ within their Aspyre program. They target a subset of the residential apartment segment, a \"preferred group\" which they view as highly insurable due to superior loss performance (i.e. luxury new apartments) and pre-screen building owners.","notes":"Admitted - (Apartments / Multifamily)","status":"Active","states":["NY"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"},{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"ACL_ASP_BOPAP_S","full_name":"ACL_ASP_BOPAP_S – Accelerant – Aspyre BOP Apartments","lob":"Commercial BOP","description":"Balance Partners write Surplus Lines Business Owner's Policy (BOP) program for residential apartment properties, used for risks that do not qualify for admitted placement.","notes":"Surplus Lines (E&S) - (Apartments / Multifamily)","status":"Active","states":["CA","GA"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"},{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":80,"description":"Ocean marine"}]},{"code":"ACL_BAS_FARM_A","full_name":"ACL_BAS_FARM_A – Accelerant – Bascule Farm & Ranch","lob":"Commercial - Farm & Ranch","description":"Bascule's Farm & Ranch program is meant to go hand-in-hand with their Animal Mortality program, specializing in offering coverage on equine farms and ranches. This program uses AAIS forms. The distribution channel used is specialist retail agents.","notes":"Agribusiness - All states plus DC, except Alaska and HI.","status":"Active","states":["AL","AZ","CT","ID","IN","KY","MI","MN","MO","NC","NM","NV","SC","UT","VA","WI","WV"],"lobs":[{"code":30,"description":"Farmowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"ACL_CAT_BLDRS_S","full_name":"ACL_CAT_BLDRS_S – Accelerant – Catapult Builders Risk","lob":"Builders Risk / Course of Construction","description":"Surplus lines builders risk program covering property damage during construction for middle‑market projects.","notes":"Surplus Lines (E&S) - All states and District of Columbia","status":"Active","states":["CA","FL","IL","KY","NJ","NY","PA","RI","TX","UT","WA","WI"],"lobs":[{"code":91,"description":"Inland marine"}]},{"code":"ACL_CIT_CMPRE_S","full_name":"ACL_CIT_CMPRE_S – Accelerant – Citadel REI CMP","lob":"CMP - Commercial Package","description":"The Citadel Real Estate Investors (REI) program provides commercial property and general liability coverage for non-institutional real estate investors. The majority of risks are single family homes with some multi-family home exposure. ","notes":"Surplus Lines (E&S) - (Real Estate Investors)\nCMP - Commercial Multi-Peril\nAll states plus DC, except TX and OK","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":10,"description":"Fire"},{"code":21,"description":"Allied lines"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"ACL_DUA_CMAUTO_S","full_name":"ACL_DUA_CMAUTO_S – Accelerant – DUAL Commercial Auto","lob":"Commercial Auto","description":"The DUAL Commercial Auto program identifies and systematically prices for key commercial auto and trucking risk characteristics using a proven proprietary underwriting and pricing model which has produced successful results over the past 30 years. The product is distributed through a select wholesale producer network with expertise in the trucking space.","notes":"Surplus Lines (E&S) - (Real Estate Investors)\nCasualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["CA","TX"],"lobs":[{"code":80,"description":"Ocean marine"},{"code":193,"description":"Commercial auto no-fault (personal injury protection)"},{"code":194,"description":"Other commercial auto liability"},{"code":212,"description":"Commercial auto physical damage"}]},{"code":"ACL_NREIG_CMPRE_S","full_name":"ACL_NREIG_CMPRE_S – Accelerant – NREIG CMP","lob":"CMP - Commercial Package","description":"Mimics Citadel REI. The NREIG CMP program provides commercial property, general liability, equipment breakdown, and inland marine coverage for non-institutional real estate investors. The majority of risks are single family homes with some multi-family home exposure. ","notes":"Surplus Lines (E&S) - (Real Estate Investors)\nCMP - Commercial Multi-Peril - All states plus DC","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":10,"description":"Fire"},{"code":21,"description":"Allied lines"},{"code":91,"description":"Inland marine"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"ACL_QUA_CCGL_A","full_name":"ACL_QUA_CCGL_A – Accelerant – Quantum Commercial GL","lob":"Commercial General Liability (Casualty)","description":"Quantum writes Commercial GL coverage for construction projects on both a primary and excess basis. They target developers, general contractors, and sub-contractors. Primary limits max at $2M/$4M/$4M; Practice limits max at $1M/$1M/$2M; Excess up to $5M; Total Limit per Project up to $7M.","notes":"Admitted\nCasualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability) - General Liability\nNY Only","status":"Active","states":["NJ","NY"],"lobs":[{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"ACL_QUA_CCGL_S","full_name":"ACL_QUA_CCGL_S – Accelerant – Quantum Commercial GL","lob":"Commercial General Liability (Casualty)","description":"Quantum writes Commercial GL coverage for construction projects on both a primary and excess basis. They target developers, general contractors, and sub-contractors. Primary limits max at $2M/$4M/$4M; Practice limits max at $1M/$1M/$2M; Excess up to $5M; Total Limit per Project up to $7M.","notes":"Surplus Lines (E&S)\nCasualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability) - General Liability\nE&S in all other states","status":"Active","states":["AK","CA","FL","IA","IL","LA","MA","MT","NJ","NV","NY","OK","TX","UT","WA"],"lobs":[{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"ACL_RIV_YACHT_S","full_name":"ACL_RIV_YACHT_S – Accelerant – Rivington Yacht","lob":"Marine / Yacht Insurance (Casualty)","description":"The Rivington Yacht program with Accelerant writes small yachts up to $3M per yacht for Hull & Machinery and up to $1M per occurrence for Protection & Indemnity. They are authorized to write in all 50 states & DC for mooring locations primarily US based (i.e. no primary mooring locations in the Caribbean.)","notes":"Surplus Lines (E&S)\nCasualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)\nAll states and District of Columbia; for mooring locations primarily US based.","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":80,"description":"Ocean marine"}]},{"code":"ACL_VOL_BOPMS_S","full_name":"ACL_VOL_BOPMS_S – Accelerant – Volta BOP","lob":"Commercial BOP","description":"The Volta program is a BOP program focused on underwriting low and medium \"Main Street\" commercial property risks that qualify for export to the E&S market.","notes":"Surplus Lines (E&S) - Business Owners Policy (BOP)","status":"Active","states":["FL","LA","TX"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"},{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":80,"description":"Ocean marine"},{"code":172,"description":"Other liabilities – claims-made"}]},{"code":"ACN","full_name":"ACN – Acadian","lob":"Homeowners","description":"Run-off. Specialty insurance program focused on commercial risks.","notes":"LA - Louisana Only","status":"Run-off","states":["LA"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"ACNT","full_name":"ACNT – Acadian","lob":"Homeowners","description":"Specialty insurance program providing commercial coverage solutions.","notes":"","status":"Run-off","states":["LA"],"lobs":[{"code":10,"description":"Fire"},{"code":40,"description":"Homeowners multiple peril"}]},{"code":"AHOY","full_name":"AHOY – Ahoy!","lob":"Marine / Boat Insurance (Casualty)","description":"Ahoy! is a start-up inland marine insurtech program in the recreational boating market. Exposure is primarily inland and targets boats less than twenty-six feet with hull values of $500K or less. The program has had difficulty growing and after nearly shutting down in early 2023, they received a $4.2M investment in September 2023.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":90,"description":"ASLOB 90"}]},{"code":"AMRISC","full_name":"AMRISC – AmRisc","lob":"Commercial Property","description":"AmRisc is a CAT-focused MGA writing commercial property risks with the majority of exposure in FL and TX. The program has been in business for 20+ years and has longstanding relationships with their participating carriers and reinsurers.","notes":"(Catastrophe‑Exposed)","status":"Active","states":["AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"}]},{"code":"ANNEX-FLOOD","full_name":"ANNEX-FLOOD – Annex Flood","lob":"Flood Insurance ","description":"Flood insurance program providing coverage outside the standard NFIP.","notes":"","status":"Active","states":["AZ","CA","FL","GA","MD","NC","NJ","PA","SC","TX","VA"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"ARROWHEAD","full_name":"ARROWHEAD – Arrowhead","lob":"Commercial P&C","description":"Earthquake DIC program writing E&S commercial property line for over 23 years. Risks are placed on a syndicated basis, primary and excess, with over 19 carriers participating. Inception to date historical loss ratio results are less than 1%. Exposures are concentrated on the West Coast, with CA, WA, and OR representing 98% of the portfolio.","notes":"(Multi‑Line Platform)","status":"Active","states":["AK","CA","OR","UT","WA","WY"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"}]},{"code":"ARROWHEAD_3","full_name":"ARROWHEAD_3 – Arrowhead","lob":"Commercial P&C","description":"Commercial insurance program operating through the Arrowhead platform. Used to distinguish newer underwriting, reinsurance, or structural changes","notes":"(Multi‑Line Platform)","status":"Active","states":["AK","AZ","CA","HI","ID","OR","SC","UT","WA","WY"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"}]},{"code":"ATLAS","full_name":"ATLAS – Atlas","lob":"Homeowners ","description":"Run-off. This is a mature, stable book produced by long standing agents. This business came to Spinnaker as a book roll in 2018 as a combination from three other prior carriers. Since being on Spinnaker paper, the book has not experienced a significant hurricane event, though there was a major, unusual for Harris County, hailstorm in May 2019 that accounts for the 17.34% ITD Known Cat L/R. The ITD Known Non Cat L/R is 22.46% which is slightly higher than Atlas’s experience (generally around 20%), though it is too soon to draw a large conclusion from that magnitude of increase over a short period of time. A likely explanation is a slightly new geographical (within coastal TX) mix in the book as a result of diversifying cat","notes":"Coastal","status":"Run-off","states":["TX"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":90,"description":"ASLOB 90"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"BATTLEFACE","full_name":"BATTLEFACE – Battleface","lob":"Travel Insurance (Casualty)","description":"Battleface is a travel insurance program that provides its products through sub-producers and partnership opportunities where the product is embedded into the customer journey of third party sites. After originally launching in 2019 and subsequently being cancelled by the reinsurer due to the COVID-19 pandemic, the program relaunched in March 2021.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Run-off","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":90,"description":"ASLOB 90"},{"code":159,"description":"Other health"}]},{"code":"BATTLEFACE_2","full_name":"BATTLEFACE_2 – Battleface","lob":"Travel Insurance (Casualty)","description":"Additional Battleface program iteration supporting specialty travel insurance. Battleface 2 is a later, materially restructured version of the Battleface program, created to separately track risk, reinsurance, and reporting after program changes.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Run-off","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":90,"description":"ASLOB 90"},{"code":159,"description":"Other health"}]},{"code":"BOOST","full_name":"BOOST – Boost","lob":"Insurance Platform / Embedded Insurance","description":"Boost is a fully licensed MGA, providing insurance infrastructure-as-a-service packaging the necessary compliance, operational, capital, and technological components of an insurance program into a turnkey, white-labeled solution, accessible via a simple API integration. This program offers cyber liability marketed to small to medium size companies.","notes":"","status":"Active","states":["AL","AZ","CO","GA","IA","ID","IL","KS","MN","MO","NM","TN","TX","UT","WV","WY"],"lobs":[{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"BOOST-CYBER","full_name":"BOOST-CYBER – Boost Cyber (Cyber Insurance Program)","lob":"Cyber Insurance (Casualty)","description":"Cyber insurance program providing coverage for data breaches, cyberattacks, and technology‑related risks through the Boost platform.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","IA","ID","IL","IN","KS","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","WA","WI","WV","WY"],"lobs":[{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":172,"description":"Other liabilities – claims-made"}]},{"code":"BOO_LPL_A","full_name":"BOO_LPL_A","lob":"","description":"","notes":"","status":"Active","states":["AZ","CO","FL","GA","MI","MN","MO","NM","NV","OH","PA","TX"],"lobs":[{"code":172,"description":"Other liabilities – claims-made"}]},{"code":"BOO_LPL_S","full_name":"BOO_LPL_S","lob":"","description":"","notes":"","status":"Active","states":["AR","AZ","CA","CO","CT","DC","FL","GA","HI","IA","ID","KY","MA","MD","MI","MO","MS","NE","NH","NJ","NM","NV","NY","PA","SC","TN","TX","VA","WA"],"lobs":[{"code":17,"description":"ASLOB 17"},{"code":172,"description":"Other liabilities – claims-made"}]},{"code":"CBR","full_name":"CBR – Cabrillo","lob":"Personal Lines - Homeowners/Dwelling","description":"Legacy Cabrillo homeowners program that transitioned in 2020 to a NY/NJ‑only book. Due to rising CAT costs and frequency, reinsurance terms became financially unviable. After evaluating alternatives, the program was discontinued, and Hippo acquired renewal rights to NY and NJ business produced by iVantage (Allstate).","notes":"(Catastrophe / Wildfire, Runoff)","status":"Run-off","states":["NC","NJ","NY","RI","SC"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"CBR_NOTSPIN","full_name":"CBR_NOTSPIN – Cabrillo (Non‑Spin)","lob":"Personal Lines - Homeowners/Dwelling","description":"Risks that are not part of the standard Spinnaker (“Spin”) placement, tracked separately for structural and reporting purposes.","notes":"(Runoff / Non‑Spinnaker Paper)","status":"Run-off","states":["RI"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"COTERIE","full_name":"COTERIE – Coterie (Small Commercial Insurance)","lob":"CMP - Small Commercial Package","description":"Coterie launched with Spinnaker as a start up MGA writing small business commercial general liability, BOP, and professional liability policies through agents. In 2024, the MGA began offering $2M occ/$4M agg limits. ","notes":"CMP - Commercial Multi-Peril","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"},{"code":52,"description":"Commercial multiple peril (liability portion)"}]},{"code":"COTERIE-BERK-CYBER","full_name":"COTERIE-BERK-CYBER – Coterie – Berkley Cyber","lob":"Cyber Insurance (Casualty)","description":"Cyber insurance program offered through Coterie and backed by Berkley, providing protection against cyber and data risks.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["AL","AR","AZ","CO","DE","FL","HI","IA","ID","IL","IN","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","ND","NE","NH","NM","NV","OH","OK","OR","PA","SC","TN","TX","UT","VA","VT","WI","WV"],"lobs":[{"code":52,"description":"Commercial multiple peril (liability portion)"}]},{"code":"COTERIE-BERK-WPV","full_name":"COTERIE-BERK-WPV – Coterie – Berkley Workers’ Comp / WPV","lob":"Workers’ Compensation (Casualty)","description":"Workers’ compensation and related coverage program distributed through Coterie and underwritten by Berkley.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["AK","AL","AR","AZ","CO","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NM","NV","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WI","WV"],"lobs":[{"code":52,"description":"Commercial multiple peril (liability portion)"}]},{"code":"COTERIE-BERKLEY","full_name":"COTERIE-BERKLEY – Coterie – Berkley Program","lob":"CMP - Small Commercial Package","description":"Commercial insurance program offered through Coterie with underwriting support from Berkley.","notes":"CMP - Commercial Multi-Peril","status":"Active","states":["CA"],"lobs":[{"code":52,"description":"Commercial multiple peril (liability portion)"}]},{"code":"EUC_CYBER_S","full_name":"EUC_CYBER_S – Euclid Underwriting – Cyber (Surplus Lines)","lob":"Cyber Insurance (Casualty)","description":"Euclid Cyber is a start-up under the larger Euclid MGA brand. This program will provide excess cyber liability coverage for companies with $1B+ in revenues and limits up to $5M in the aggregate any one policy are offered. Limits can be ventilated to different attachment points for a single named insured. Average attachment points are at ~$160M.","notes":"(Surplus Lines)\nCasualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["CA","CT","FL","GA","IL","NC","NY","TX","VA"],"lobs":[{"code":172,"description":"Other liabilities – claims-made"}]},{"code":"HDVI","full_name":"HDVI – HDVI (Commercial Auto / Trucking)","lob":"Commercial Auto","description":"Commercial trucking program writing (via use of telematics) auto liability, auto physical damage, general liability & cargo coverages in approximately 22 states. Program is 100% reinsured. Claims are also handled by HDVI (brought in house from Gallagher Bassett in 2023). 100% of HDVI's business is written on Spinnaker paper.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["AL","AR","AZ","CO","FL","GA","IL","IN","KS","KY","MI","MN","MO","MS","NC","NJ","OH","OK","PA","SC","TN","TX","UT","VA","WI"],"lobs":[{"code":90,"description":"ASLOB 90"},{"code":171,"description":"Other liabilities – occurrence"},{"code":193,"description":"Commercial auto no-fault (personal injury protection)"},{"code":194,"description":"Other commercial auto liability"},{"code":212,"description":"Commercial auto physical damage"}]},{"code":"HIPPO-COMMERCIAL","full_name":"HIPPO-COMMERCIAL – Hippo Commercial","lob":"CMP - Commercial Package / Small Commercial","description":"Commercial insurance program offering property and liability coverage for small and mid‑sized businesses.","notes":"CMP - Commercial Multi-Peril","status":"Active","states":["AL","AZ","CO","GA","MD","NC","NV","PA","TN","VA","WI"],"lobs":[{"code":51,"description":"Commercial multiple peril (non-liability portion)"},{"code":52,"description":"Commercial multiple peril (liability portion)"}]},{"code":"HIPPO-CORE_21_CBR","full_name":"HIPPO-CORE_21_CBR – Hippo Core 2021 – Builders Risk","lob":"Builders Risk","description":"Hippo Core Builders Risk program covering construction projects under the 2021 program year.","notes":"","status":"Active","states":["NJ","NY"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"HIPPO-CORE_22_CBR","full_name":"HIPPO-CORE_22_CBR – Hippo Core 2022 – Builders Risk","lob":"Builders Risk","description":"Hippo Core Builders Risk program covering construction projects under the 2022 program year.","notes":"","status":"Active","states":["NJ","NY"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"HIPPO-CORE_23_CBR","full_name":"HIPPO-CORE_23_CBR – Hippo Core 2023 – Builders Risk","lob":"Builders Risk","description":"Hippo Core Builders Risk program covering construction projects under the 2023 program year.","notes":"","status":"Active","states":["NJ","NY"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"HIPPO-CORE_24_CBR","full_name":"HIPPO-CORE_24_CBR – Hippo Core 2024 – Builders Risk","lob":"Builders Risk","description":"Hippo Core Builders Risk program covering construction projects under the 2024 program year.","notes":"","status":"Active","states":["NJ","NY"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"HIPPO-CORE_25_CBR","full_name":"HIPPO-CORE_25_CBR – Hippo Core 2025 – Builders Risk","lob":"Builders Risk","description":"Hippo Core Builders Risk program covering construction projects under the 2025 program year.","notes":"","status":"Active","states":["NJ"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"HIPPO-HO5_25_ASINCL","full_name":"HIPPO-HO5_25_ASINCL – Hippo HO5 2025 (Owner‑Occupied Homeowners)","lob":"Personal Lines - Homeowners/Dwelling","description":"HO5 homeowners insurance program for owner‑occupied residences under the 2025 form year.","notes":"(HO5 – Owner‑Occupied)","status":"Active","states":["CA","GA","NV"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"HL","full_name":"HL – HL (Specialty Program)","lob":"Specialty Commercial (Casualty)","description":"Specialty insurance program providing niche coverage solutions.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Active","states":["OK"],"lobs":[{"code":30,"description":"Farmowners multiple peril"},{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MCN_CMAUTO_S","full_name":"MCN_CMAUTO_S – MCN – Commercial Auto (Surplus Lines)","lob":"Commercial Auto","description":"Surplus Lines commercial auto insurance program for higher‑risk or non‑standard auto exposures.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)\nAZ, CA, CO, FL, GA, IA, ID, IN, KY, MN, MO, NC, NJ, OH, OK, OR, SC, TN, TX, UT, WA, WI","status":"Active","states":["CA","CO","OH","PA"],"lobs":[{"code":194,"description":"Other commercial auto liability"}]},{"code":"MILEAUTO","full_name":"MILEAUTO – Mile Auto (Pay‑Per‑Mile Personal Auto)","lob":"Personal Auto","description":"Mile Auto is a pay-per-mile personal auto program written on an admitted basis in 11 states. Claims are also handled by Mile Auto. The program was placed into runoff effective 7/31/2023 due to loss of 90% QS reinsurance with Swiss Re.","notes":"(Usage‑Based)","status":"Run-off","states":["AZ","CA","CO","FL","GA","IL","MD","NH","OH","OR","PA","TN","TX","VA","WA","WI"],"lobs":[{"code":191,"description":"Private passenger auto no-fault (personal injury protection)"},{"code":192,"description":"Other private passenger auto liability"},{"code":211,"description":"Private passenger auto physical damage"}]},{"code":"MSI","full_name":"MSI – MSI (Multiple Program Years / Forms)","lob":"Personal Lines ","description":"Multi‑year insurance program supporting various homeowners and business forms.","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_1_21","full_name":"MSI_1_21","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_1_22","full_name":"MSI_1_22","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_1_23","full_name":"MSI_1_23","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_1_24","full_name":"MSI_1_24","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_2_21","full_name":"MSI_2_21","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_2_22","full_name":"MSI_2_22","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_2_23","full_name":"MSI_2_23","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_2_24","full_name":"MSI_2_24","lob":"","description":"","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","MI","MN","MO","MS","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_B_19","full_name":"MSI_B_19","lob":"","description":"","notes":"","status":"Active","states":["CT","DC","FL","GA","IL","MA","MD","NJ","NY","PA","VA","WI"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_B_20","full_name":"MSI_B_20","lob":"","description":"","notes":"","status":"Active","states":["CA","CT","DC","FL","IL","MA","MD","NJ","NY","PA","VA","WI"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_B_21","full_name":"MSI_B_21","lob":"","description":"","notes":"","status":"Active","states":["CA","CT","DC","FL","GA","IL","MA","MD","NH","NJ","NY","PA","RI","VA","WI"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_B_22","full_name":"MSI_B_22","lob":"","description":"","notes":"","status":"Active","states":["CA","CT","DC","DE","FL","GA","IL","MA","MD","NC","NH","NJ","NY","PA","RI","TN","VA","WI"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_B_23","full_name":"MSI_B_23","lob":"","description":"","notes":"","status":"Active","states":["CA","CT","DC","DE","FL","GA","IL","MA","MD","MN","NC","NH","NJ","NY","PA","RI","TN","VA","WI"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_B_24","full_name":"MSI_B_24","lob":"","description":"","notes":"","status":"Active","states":["CA","CT","DC","DE","FL","GA","IL","MA","MD","MN","NC","NH","NJ","NY","PA","RI","TN","VA","WI"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_HO3_A_FL","full_name":"MSI_HO3_A_FL – MSI HO3 (Admitted – Florida)","lob":"Personal Lines - Homeowners/Dwelling","description":"MSI launched their FL Admitted HO3 product in early 2022 with the first policy sold in April 2022. Product is a me too of Heritage and the target of the program is Main Street homes with Cov A's between $250K - $1.2M. Only BRP owned agencies are used to sell the product.","notes":"(HO3 – Admitted)","status":"Active","states":["FL","GA"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_HO3_A_RG","full_name":"MSI_HO3_A_RG – MSI HO3 (Admitted – Regional)","lob":"Personal Lines - Homeowners/Dwelling","description":"Admitted HO3 homeowners insurance program written on a regional basis.","notes":"(HO3 – Admitted)","status":"Active","states":["MA"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_HO3_MNST_S","full_name":"MSI_HO3_MNST_S – MSI HO3 (Surplus Lines – Mainstreet)","lob":"Personal Lines - Homeowners/Dwelling","description":"MSI Mainstreet E&S is a new sub program in the MSI Homeowners group. This sub program is noncat focused “Mainstreet” homes, with TIV maximums of $750K.","notes":"(HO3 – Surplus Lines)","status":"Active","states":["AL","AR","CA","CO","CT","DE","GA","IA","IL","IN","KS","LA","MA","MD","ME","MN","MO","MS","NC","ND","NE","NJ","NY","OK","PA","RI","SC","TN","TX","VA","VT","WI","WV"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_HO3_S","full_name":"MSI_HO3_S – MSI HO3 (Excess & Surplus Lines)","lob":"Personal Lines - Homeowners/Dwelling","description":"MSI's E&S affluent product launched in early 2022, with its first policies written in April of that year. The target for this product is owner occupied homes, where pride of ownership is evident, with new business TIVs up to $3M in CAT exposed areas.","notes":"(HO3 – Surplus Lines)","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"MSI_HO3_S_ARCANA","full_name":"MSI_HO3_S_ARCANA – MSI HO3 (Surplus Lines – Arcana)","lob":"Personal Lines - Homeowners/Dwelling","description":"MSI launched Arcana on SSIC on 9/1/2022 by completing a partial book roll from Lloyd's capacity. Arcana is a DP3 product for the owners of occupied rental properties, the policy includes coverage for building, loss of use (if selected), medical payments, and liability. This subprogram operates on a group construct with certificates issued per location.","notes":"(HO3 – Surplus Lines)","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":10,"description":"Fire"}]},{"code":"ORC","full_name":"ORC – ORC (Specialty Program)","lob":"Specialty Commercial (Casualty)","description":"Specialty insurance program providing targeted coverage for niche risks.","notes":"Casualty = programs where the primary exposure is liability, not property\n(e.g., Auto, GL, WC, Cyber, Travel, Specialty Liability)","status":"Run-off","states":["AL","MS","TX"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"OUTDOORSY","full_name":"OUTDOORSY – Outdoorsy (RV Sharing Insurance)","lob":"RV / Specialty Auto","description":"Insurance program covering recreational vehicles used in peer‑to‑peer sharing and rental.","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DE","GA","IA","ID","IL","IN","KS","MD","ME","MN","MO","MS","MT","NC","NE","NM","NV","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":191,"description":"Private passenger auto no-fault (personal injury protection)"},{"code":192,"description":"Other private passenger auto liability"},{"code":211,"description":"Private passenger auto physical damage"}]},{"code":"OUTDOORSY_3","full_name":"OUTDOORSY_3 – Outdoorsy (Versioned Program)","lob":"RV / Specialty Auto","description":"Versioned Outdoorsy insurance program supporting updated coverage structures.","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DE","GA","IA","ID","IL","IN","KS","KY","MA","MD","ME","MN","MO","MS","MT","NC","ND","NE","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":191,"description":"Private passenger auto no-fault (personal injury protection)"},{"code":192,"description":"Other private passenger auto liability"},{"code":211,"description":"Private passenger auto physical damage"}]},{"code":"PATTERN","full_name":"PATTERN – Pattern Insurance (Homeowners)","lob":"Homeowners","description":"Pattern offers a parametric travel coverage to protect insureds from potential rainy weather during their planned trip. The product is currently offered through a single partnership with Book Outdoors.","notes":"","status":"Active","states":["AL","AR","AZ","CA","CO","CT","DE","GA","HI","ID","IL","IN","KS","KY","LA","MA","ME","MI","MN","MS","MT","NC","ND","NE","NH","NJ","NM","NV","OH","OK","OR","PA","SC","SD","TN","TX","UT","VA","WA","WI","WY"],"lobs":[{"code":90,"description":"ASLOB 90"}]},{"code":"RG","full_name":"RG – Redpoint / RG Program","lob":"Specialty Commercial","description":"Commercial and specialty insurance program distributed through Redpoint.","notes":"","status":"Active","states":["FL","MA","VA"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":40,"description":"Homeowners multiple peril"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"RG_HSB","full_name":"RG_HSB – RG with Hartford Steam Boiler","lob":"Commercial Property / Equipment Breakdown","description":"RG program enhanced with Hartford Steam Boiler coverage for equipment breakdown and related risks.","notes":"","status":"Active","states":["MA"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"RVP","full_name":"RVP – RVP (Recreational Vehicle Program)","lob":"Recreational Vehicle","description":"Insurance program providing coverage for recreational vehicles.","notes":"(RV)","status":"Active","states":["CA","TX"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"SB","full_name":"SB – Sure (Embedded Insurance Program)","lob":"Embedded Insurance Platform","description":"Embedded insurance platform enabling insurance products to be integrated into partner offerings.","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":90,"description":"ASLOB 90"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"SB_A","full_name":"SB_A – Sure (Admitted Program)","lob":"Embedded Insurance Platform","description":"Admitted insurance program offered through the Sure embedded insurance platform.","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"],"lobs":[{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"SB_HSB","full_name":"SB_HSB – Sure with Hartford Steam Boiler","lob":"Embedded Insurance/ Equipement Breakdown","description":"Sure embedded insurance program including Hartford Steam Boiler coverage.","notes":"","status":"Active","states":["AK","AL","AR","AZ","CA","CO","CT","DC","DE","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WI","WV","WY"],"lobs":[{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":171,"description":"Other liabilities – occurrence"}]},{"code":"SOLA","full_name":"SOLA – Sola Insurance","lob":"Specialty Commercial","description":"Sola is a start-up program that launched its first product in June 2023. The program offers a parametric tornado crisis cover that pays out a set limit based on the coverage purchased and the EF rating of a tornado within a certain distance to the insured property, once the insured confirms damage from the tornado.","notes":"","status":"Active","states":["AL","AR","GA","IA","IL","IN","KS","KY","MO","MS","NE","OH","OK","TN","TX"],"lobs":[{"code":34,"description":"ASLOB 34"}]},{"code":"SOLA_WH","full_name":"SOLA_WH – Sola – Warehouse / WH Variant","lob":"Commercial Property ","description":"Sola Wind & Hail is a start-up program that began writing business in October 2024. The program offers wind & hail crisis coverage that pays a disaster benefit based on damage suffered within the payout zone. The policy supplements a homeowner's or BOP policy & is intended to help defray the cost of high deductibles.","notes":"Warehouse / WH Variant (Warehouse)","status":"Active","states":["AR","GA","IA","IN","KY","MO","OH","TN"],"lobs":[{"code":34,"description":"ASLOB 34"}]},{"code":"TF-COMML","full_name":"TF-COMML – Team Focus Commercial","lob":"CMP - Commercial Package","description":"Run-off","notes":"CMP - Commercial Multi-Peril","status":"Run-off","states":["AL","GA","NC","SC"],"lobs":[{"code":10,"description":"Fire"},{"code":20,"description":"ASLOB 20"},{"code":51,"description":"Commercial multiple peril (non-liability portion)"},{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":194,"description":"Other commercial auto liability"}]},{"code":"TF-CONDO","full_name":"TF-CONDO – Team Focus Condo","lob":"Personal Lines - Homeowners/Dwelling","description":"HO6 Condo-Owners Program currently in run-off. Non-cat LR deteriorated due to frequency in south Florida counties. Growth of the program was centered in Tri-County FL. Program was unable to obtain reinsurance and went into runoff effective 6/1/2022.","notes":"","status":"Run-off","states":["AL","DE","FL","MD","SC"],"lobs":[{"code":40,"description":"Homeowners multiple peril"}]},{"code":"VITU","full_name":"VITU – Vitu (Automotive / Dealer Services)","lob":"Commercial Auto","description":"Run-Off. A non-standard auto program. North American Risk Services (NARS) is the claims administrator on the program.","notes":"","status":"Run-off","states":["CA"],"lobs":[{"code":194,"description":"Other commercial auto liability"},{"code":212,"description":"Commercial auto physical damage"}]}];
+const ASLOB_LIST    = [{"code":10,"description":"Fire"},{"code":21,"description":"Allied lines"},{"code":22,"description":"Multiple peril crop"},{"code":23,"description":"Federal flood"},{"code":24,"description":"Private crop"},{"code":25,"description":"Private flood"},{"code":30,"description":"Farmowners multiple peril"},{"code":40,"description":"Homeowners multiple peril"},{"code":51,"description":"Commercial multiple peril (non-liability portion)"},{"code":52,"description":"Commercial multiple peril (liability portion)"},{"code":60,"description":"Mortgage guaranty"},{"code":80,"description":"Ocean marine"},{"code":91,"description":"Inland marine"},{"code":92,"description":"Pet insurance"},{"code":100,"description":"Financial guaranty"},{"code":111,"description":"Medical professional liability - occurrence"},{"code":112,"description":"Medical professional liability - claims-made"},{"code":120,"description":"Earthquake"},{"code":131,"description":"Comprehensive (hospital and medical) individual"},{"code":132,"description":"Comprehensive (hospital and medical) group"},{"code":140,"description":"Credit accident and health (group and individual)"},{"code":151,"description":"Vision only"},{"code":152,"description":"Dental only"},{"code":153,"description":"Disability income"},{"code":154,"description":"Medicare supplement"},{"code":155,"description":"Medicaid Title XIX"},{"code":156,"description":"Medicare Title XVIII"},{"code":157,"description":"Long-term care"},{"code":158,"description":"Federal employees health benefits plan"},{"code":159,"description":"Other health"},{"code":160,"description":"Workers' compensation"},{"code":171,"description":"Other liabilities – occurrence"},{"code":172,"description":"Other liabilities – claims-made"},{"code":173,"description":"Excess workers' compensation"},{"code":181,"description":"Products liability — occurrence"},{"code":182,"description":"Products liability — claims-made"},{"code":191,"description":"Private passenger auto no-fault (personal injury protection)"},{"code":192,"description":"Other private passenger auto liability"},{"code":193,"description":"Commercial auto no-fault (personal injury protection)"},{"code":194,"description":"Other commercial auto liability"},{"code":211,"description":"Private passenger auto physical damage"},{"code":212,"description":"Commercial auto physical damage"},{"code":220,"description":"Aircrafts (all perils)"},{"code":230,"description":"Fidelity"},{"code":240,"description":"Surety"},{"code":260,"description":"Burglary and theft"},{"code":270,"description":"Boiler and machinery"},{"code":280,"description":"Credit"},{"code":290,"description":"International"},{"code":300,"description":"Warranty"},{"code":310,"description":"Reinsurance - nonproportional assumed property"},{"code":320,"description":"Reinsurance - nonproportional assumed liability"},{"code":330,"description":"Reinsurance - nonproportional assumed financial lines"},{"code":340,"description":"Aggregate write-ins for other lines of business"}];
+const ALL_STATES    = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MH","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"];
+
+let programs = [];
+let currentCode = null;
+let currentFilter = 'all';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT & LOCAL STORAGE
+// ─────────────────────────────────────────────────────────────────────────────
+function init() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      // Merge: prefer saved data but fall back to seed for any missing programs
+      programs = parsed.programs || SEED_PROGRAMS;
+    } catch(e) {
+      programs = JSON.parse(JSON.stringify(SEED_PROGRAMS));
+    }
+  } else {
+    programs = JSON.parse(JSON.stringify(SEED_PROGRAMS));
+  }
+  renderList();
+  updateLastSaved();
+}
+
+function persist() {
+  const payload = { programs, savedAt: new Date().toISOString() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  updateLastSaved();
+}
+
+function updateLastSaved() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const el = document.getElementById('lastSaved');
+  if (!el) return;
+  if (saved) {
+    try {
+      const d = new Date(JSON.parse(saved).savedAt);
+      el.textContent = d.toLocaleString();
+    } catch(e) { el.textContent = '—'; }
+  } else { el.textContent = 'Not yet saved'; }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LIST
+// ─────────────────────────────────────────────────────────────────────────────
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.fpill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  renderList();
+}
+
+function renderList() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = programs.filter(p => {
+    const matchQ = !q ||
+      p.code.toLowerCase().includes(q) ||
+      p.full_name.toLowerCase().includes(q) ||
+      (p.lob||'').toLowerCase().includes(q) ||
+      (p.description||'').toLowerCase().includes(q);
+    const isRO = p.status === 'Run-off';
+    const matchF = currentFilter === 'all'
+      || (currentFilter === 'active' && !isRO)
+      || (currentFilter === 'runoff' && isRO);
+    return matchQ && matchF;
+  });
+
+  document.getElementById('progCount').textContent =
+    `${filtered.length} of ${programs.length} programs`;
+
+  document.getElementById('progList').innerHTML = filtered.map(p => `
+    <div class="pitem ${p.code === currentCode ? 'active' : ''}"
+         onclick="selectProgram('${p.code.replace(/'/g,"\\'")}')">
+      <div class="pi-code">${p.code}</div>
+      <div class="pi-name">${p.full_name}</div>
+      <div class="pi-lob">${p.lob || '—'}</div>
+    </div>`).join('');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DETAIL VIEW
+// ─────────────────────────────────────────────────────────────────────────────
+function selectProgram(code) {
+  currentCode = code;
+  renderList();
+  const p = programs.find(x => x.code === code);
+  if (!p) return;
+
+  const isRO = p.status === 'Run-off';
+  const stateCount = (p.states||[]).length;
+  const lobCount   = (p.lobs||[]).length;
+
+  document.getElementById('mainPanel').innerHTML = `
+    <div style="margin-bottom:24px;">
+      <div class="det-code">${p.code}</div>
+      <div class="det-title">${p.full_name}</div>
+      <div class="badges">
+        ${p.lob ? `<span class="badge badge-lob">📋 ${p.lob}</span>` : ''}
+        ${isRO
+          ? `<span class="badge badge-runoff">⚠ Run-off</span>`
+          : `<span class="badge badge-active">✓ Active</span>`}
+        ${p.notes ? `<span class="badge" style="background:var(--surface2);color:var(--ink-mid);border:1px solid var(--border);">ℹ ${p.notes}</span>` : ''}
+      </div>
+    </div>
+
+    <div class="det-desc ${!p.description ? 'empty' : ''}">${p.description || 'No description available.'}</div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-head">
+          <h3>States Written</h3>
+          <span class="card-count">${stateCount}</span>
+        </div>
+        <div class="card-body">
+          <div class="state-grid">
+            ${stateCount
+              ? p.states.map(s => `<span class="state-chip">${s}</span>`).join('')
+              : `<span style="color:var(--ink-faint);font-size:12px;">No states recorded</span>`}
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Lines of Business</h3>
+          <span class="card-count">${lobCount}</span>
+        </div>
+        <div class="card-body">
+          <div class="lob-list">
+            ${lobCount
+              ? p.lobs.map(l => `
+                  <div class="lob-item">
+                    <span class="lob-num">${l.code}</span>
+                    <span class="lob-name">${l.description}</span>
+                  </div>`).join('')
+              : `<span style="color:var(--ink-faint);font-size:12px;">No LOBs recorded</span>`}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-primary"   onclick="openEditStates()">✎ Edit States</button>
+      <button class="btn btn-primary"   onclick="openEditLOBs()">✎ Edit LOBs</button>
+      <button class="btn btn-secondary" onclick="openEditInfo()">✎ Edit Info</button>
+      <button class="btn btn-danger"    onclick="openRemove()">✕ Remove Program</button>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EDIT STATES
+// ─────────────────────────────────────────────────────────────────────────────
+function openEditStates() {
+  const p = programs.find(x => x.code === currentCode);
+  const checked = new Set(p.states || []);
+  document.getElementById('stateCBs').innerHTML = ALL_STATES.map(s => `
+    <label class="scb">
+      <input type="checkbox" value="${s}" ${checked.has(s) ? 'checked' : ''}>
+      <div class="scb-box">${s}</div>
+    </label>`).join('');
+  openModal('m-states');
+}
+
+function saveStates() {
+  const p = programs.find(x => x.code === currentCode);
+  p.states = [...document.querySelectorAll('#stateCBs input:checked')]
+    .map(i => i.value).sort();
+  persist();
+  closeModal('m-states');
+  selectProgram(currentCode);
+  toast('States updated', 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EDIT LOBs
+// ─────────────────────────────────────────────────────────────────────────────
+function openEditLOBs() {
+  const p = programs.find(x => x.code === currentCode);
+  const checked = new Set((p.lobs||[]).map(l => l.code));
+  document.getElementById('lobCBs').innerHTML = ASLOB_LIST.map(a => `
+    <label class="lcb">
+      <input type="checkbox" value="${a.code}" ${checked.has(a.code) ? 'checked' : ''}>
+      <span class="lcb-num">${a.code}</span>
+      <span>${a.description}</span>
+    </label>`).join('');
+  openModal('m-lobs');
+}
+
+function saveLOBs() {
+  const p = programs.find(x => x.code === currentCode);
+  p.lobs = [...document.querySelectorAll('#lobCBs input:checked')]
+    .map(i => {
+      const code = parseInt(i.value);
+      const ref  = ASLOB_LIST.find(a => a.code === code);
+      return { code, description: ref ? ref.description : '' };
+    })
+    .sort((a,b) => a.code - b.code);
+  persist();
+  closeModal('m-lobs');
+  selectProgram(currentCode);
+  toast('LOBs updated', 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EDIT INFO
+// ─────────────────────────────────────────────────────────────────────────────
+function openEditInfo() {
+  const p = programs.find(x => x.code === currentCode);
+  document.getElementById('ei-code').value   = p.code;
+  document.getElementById('ei-status').value = p.status || 'Active';
+  document.getElementById('ei-name').value   = p.full_name;
+  document.getElementById('ei-lob').value    = p.lob || '';
+  document.getElementById('ei-desc').value   = p.description || '';
+  document.getElementById('ei-notes').value  = p.notes || '';
+  openModal('m-info');
+}
+
+function saveInfo() {
+  const p = programs.find(x => x.code === currentCode);
+  p.full_name   = document.getElementById('ei-name').value.trim() || p.full_name;
+  p.status      = document.getElementById('ei-status').value;
+  p.lob         = document.getElementById('ei-lob').value.trim();
+  p.description = document.getElementById('ei-desc').value.trim();
+  p.notes       = document.getElementById('ei-notes').value.trim();
+  persist();
+  closeModal('m-info');
+  selectProgram(currentCode);
+  renderList();
+  toast('Program info saved', 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REMOVE PROGRAM
+// ─────────────────────────────────────────────────────────────────────────────
+function openRemove() {
+  document.getElementById('del-confirm').value = '';
+  openModal('m-remove');
+}
+
+function confirmRemove() {
+  const typed = document.getElementById('del-confirm').value.trim();
+  if (typed !== currentCode) {
+    toast('Code does not match — not removed', 'err'); return;
+  }
+  programs = programs.filter(p => p.code !== currentCode);
+  currentCode = null;
+  persist();
+  closeModal('m-remove');
+  renderList();
+  document.getElementById('mainPanel').innerHTML = `
+    <div class="empty">
+      <div class="empty-icon">✓</div>
+      <h2>Program removed</h2>
+      <p>Select another program from the list.</p>
+    </div>`;
+  toast('Program removed', 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADD PROGRAM
+// ─────────────────────────────────────────────────────────────────────────────
+function openAddProgram() {
+  ['add-code','add-name','add-lob','add-notes','add-desc'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('add-status').value = 'Active';
+
+  document.getElementById('addStateCBs').innerHTML = ALL_STATES.map(s => `
+    <label class="scb">
+      <input type="checkbox" value="${s}">
+      <div class="scb-box">${s}</div>
+    </label>`).join('');
+
+  document.getElementById('addLobCBs').innerHTML = ASLOB_LIST.map(a => `
+    <label class="lcb">
+      <input type="checkbox" value="${a.code}">
+      <span class="lcb-num">${a.code}</span>
+      <span>${a.description}</span>
+    </label>`).join('');
+
+  openModal('m-add');
+}
+
+function saveNewProgram() {
+  const code = document.getElementById('add-code').value.trim();
+  const name = document.getElementById('add-name').value.trim();
+  if (!code || !name) { toast('Code and Name are required', 'err'); return; }
+  if (programs.find(p => p.code === code)) { toast('Program code already exists', 'err'); return; }
+
+  const states = [...document.querySelectorAll('#addStateCBs input:checked')]
+    .map(i => i.value).sort();
+  const lobs = [...document.querySelectorAll('#addLobCBs input:checked')]
+    .map(i => {
+      const c = parseInt(i.value);
+      const ref = ASLOB_LIST.find(a => a.code === c);
+      return { code: c, description: ref ? ref.description : '' };
+    }).sort((a,b) => a.code - b.code);
+
+  programs.push({
+    code,
+    full_name:   name,
+    status:      document.getElementById('add-status').value,
+    lob:         document.getElementById('add-lob').value.trim(),
+    description: document.getElementById('add-desc').value.trim(),
+    notes:       document.getElementById('add-notes').value.trim(),
+    states, lobs
+  });
+  programs.sort((a,b) => a.code.localeCompare(b.code));
+  persist();
+  closeModal('m-add');
+  renderList();
+  selectProgram(code);
+  toast(`"${code}" added`, 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EXPORT & SHARE — produces a ready-to-share standalone HTML
+// ─────────────────────────────────────────────────────────────────────────────
+function openExport() {
+  document.getElementById('exportCount').textContent = programs.length;
+  updateLastSaved();
+  openModal('m-export');
+}
+
+function exportHTML() {
+  // Grab the current page's full HTML source
+  const source = document.documentElement.outerHTML;
+
+  // Replace the SEED_PROGRAMS constant with the current live data
+  // so the exported file opens with all edits baked in
+  const currentDataStr = JSON.stringify(programs, null, 0);
+  const updated = source.replace(
+    /const SEED_PROGRAMS = \[[\s\S]*?\];/,
+    `const SEED_PROGRAMS = ${currentDataStr};`
+  );
+
+  const blob = new Blob([updated], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `Program_Reference_${new Date().toISOString().slice(0,10)}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  closeModal('m-export');
+  toast('Shareable HTML downloaded', 'ok');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODAL HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(el =>
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); })
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOAST
+// ─────────────────────────────────────────────────────────────────────────────
+let _tt;
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(_tt);
+  _tt = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────────────────────
+init();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TAB SWITCHING
+// ─────────────────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab + '-btn').classList.add('active');
+}
+
+// Navigate from xref result to program detail on the Lookup tab
+function goToProgram(code) {
+  switchTab('prog');
+  selectProgram(code);
+  // Scroll sidebar item into view
+  setTimeout(() => {
+    const el = document.querySelector('.pitem.active');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 80);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE CROSS-REFERENCE
+// ─────────────────────────────────────────────────────────────────────────────
+function runStateXref() {
+  const state = document.getElementById('stateSelect').value;
+  const summEl   = document.getElementById('stateXrefSummary');
+  const filterEl = document.getElementById('stateXrefFilter');
+  const resEl    = document.getElementById('stateXrefResults');
+
+  if (!state) {
+    summEl.style.display = 'none';
+    filterEl.style.display = 'none';
+    resEl.innerHTML = `<div class="xref-empty"><div class="xe-icon">🗺</div><p>Select a state to see all programs writing there</p></div>`;
+    return;
+  }
+
+  const matches = programs.filter(p => (p.states||[]).includes(state));
+  const active  = matches.filter(p => p.status !== 'Run-off');
+  const runoff  = matches.filter(p => p.status === 'Run-off');
+
+  summEl.style.display = 'flex';
+  summEl.innerHTML = `<span><strong>${matches.length}</strong> program${matches.length!==1?'s':''} write in ${state}</span>
+    <span>${active.length} active &nbsp;·&nbsp; ${runoff.length} run-off</span>`;
+
+  filterEl.style.display = 'block';
+  filterEl.innerHTML = `Showing programs that write in <span>${state}</span>`;
+
+  if (!matches.length) {
+    resEl.innerHTML = `<div class="xref-empty"><div class="xe-icon">○</div><p>No programs write in ${state}</p></div>`;
+    return;
+  }
+
+  resEl.innerHTML = matches
+    .sort((a,b) => {
+      // Active first, then alphabetical
+      if (a.status === b.status) return a.code.localeCompare(b.code);
+      return a.status === 'Run-off' ? 1 : -1;
+    })
+    .map(p => {
+      const isRO = p.status === 'Run-off';
+      const badge = isRO
+        ? `<span class="badge badge-runoff" style="font-size:10px;padding:2px 8px;">Run-off</span>`
+        : `<span class="badge badge-active"  style="font-size:10px;padding:2px 8px;">Active</span>`;
+      const lobsHtml = (p.lobs||[]).length
+        ? `<div class="xi-lobs">${p.lobs.map(l=>`<span class="xi-lob">${l.code} — ${l.description}</span>`).join('')}</div>`
+        : '';
+      return `
+        <div class="xref-item" onclick="goToProgram('${p.code.replace(/'/g,"\\'")}')">
+          <div class="xi-top">
+            <span class="xi-code">${p.code}</span>
+            ${badge}
+          </div>
+          <div class="xi-name">${p.full_name}</div>
+          ${p.lob ? `<div class="xi-detail">${p.lob}</div>` : ''}
+          ${lobsHtml}
+          <div class="xi-nav">Click to view full detail →</div>
+        </div>`;
+    }).join('');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LOB CROSS-REFERENCE
+// ─────────────────────────────────────────────────────────────────────────────
+function filterLobDropdown() {
+  const q = document.getElementById('lobSearch').value.toLowerCase().trim();
+  const sel = document.getElementById('lobSelect');
+  const opts = sel.querySelectorAll('option');
+  opts.forEach(opt => {
+    if (!opt.value) return; // keep placeholder
+    const desc = (opt.dataset.desc || '').toLowerCase();
+    const text = opt.textContent.toLowerCase();
+    opt.style.display = (!q || desc.includes(q) || text.includes(q)) ? '' : 'none';
+  });
+  // Reset selection if current selection is now hidden
+  const cur = sel.options[sel.selectedIndex];
+  if (cur && cur.value && cur.style.display === 'none') {
+    sel.value = '';
+    runLobXref();
+  }
+}
+
+function runLobXref() {
+  const lobCode = parseInt(document.getElementById('lobSelect').value);
+  const summEl   = document.getElementById('lobXrefSummary');
+  const filterEl = document.getElementById('lobXrefFilter');
+  const resEl    = document.getElementById('lobXrefResults');
+
+  if (!lobCode) {
+    summEl.style.display = 'none';
+    filterEl.style.display = 'none';
+    resEl.innerHTML = `<div class="xref-empty"><div class="xe-icon">📋</div><p>Select a line of business to see all programs writing it</p></div>`;
+    return;
+  }
+
+  const lobDesc = (ASLOB_LIST.find(a => a.code === lobCode) || {}).description || '';
+  const matches = programs.filter(p => (p.lobs||[]).some(l => l.code === lobCode));
+  const active  = matches.filter(p => p.status !== 'Run-off');
+  const runoff  = matches.filter(p => p.status === 'Run-off');
+
+  summEl.style.display = 'flex';
+  summEl.innerHTML = `<span><strong>${matches.length}</strong> program${matches.length!==1?'s':''} write ASLOB ${lobCode}</span>
+    <span>${active.length} active &nbsp;·&nbsp; ${runoff.length} run-off</span>`;
+
+  filterEl.style.display = 'block';
+  filterEl.innerHTML = `Showing programs writing <span>${lobCode} — ${lobDesc}</span>`;
+
+  if (!matches.length) {
+    resEl.innerHTML = `<div class="xref-empty"><div class="xe-icon">○</div><p>No programs write this LOB</p></div>`;
+    return;
+  }
+
+  resEl.innerHTML = matches
+    .sort((a,b) => {
+      if (a.status === b.status) return a.code.localeCompare(b.code);
+      return a.status === 'Run-off' ? 1 : -1;
+    })
+    .map(p => {
+      const isRO = p.status === 'Run-off';
+      const badge = isRO
+        ? `<span class="badge badge-runoff" style="font-size:10px;padding:2px 8px;">Run-off</span>`
+        : `<span class="badge badge-active"  style="font-size:10px;padding:2px 8px;">Active</span>`;
+      const statesHtml = (p.states||[]).length
+        ? `<div class="xi-states">${p.states.map(s=>`<span class="xi-state">${s}</span>`).join('')}</div>`
+        : '';
+      return `
+        <div class="xref-item" onclick="goToProgram('${p.code.replace(/'/g,"\\'")}')">
+          <div class="xi-top">
+            <span class="xi-code">${p.code}</span>
+            ${badge}
+          </div>
+          <div class="xi-name">${p.full_name}</div>
+          ${p.lob ? `<div class="xi-detail">${p.lob}</div>` : ''}
+          ${statesHtml}
+          <div class="xi-nav">Click to view full detail →</div>
+        </div>`;
+    }).join('');
+}
+
+</script>
+
+</body></html>
